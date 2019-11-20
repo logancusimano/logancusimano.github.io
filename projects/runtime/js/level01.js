@@ -18,7 +18,8 @@ var level01 = function (window) {
             gameItems: [
                 {type: 'sawblade',x:400,y:groundY},
                 {type: 'sawblade',x:600,y:groundY},
-                {type: 'sawblade',x:900,y:groundY}
+                {type: 'sawblade',x:900,y:groundY},
+                {type: 'box',x:100,y:200}
             ]
         };
         window.levelData = levelData;
@@ -26,8 +27,36 @@ var level01 = function (window) {
         game.setDebugMode(true);
 
         // BEGIN EDITING YOUR CODE HERE
-
-
+          for (var i = 0; i < levelData.gameItems.length;i++) {
+           var gameItem = levelData.gameItems[i]; 
+           createSawBlade(gameItem.x,gameItem.y)
+        }
+        
+        function createSawBlade(x,y) {
+        var hitZoneSize = 25;
+        var damageFromObstacle = 10;
+        var myObstacle = game.createObstacle(hitZoneSize,damageFromObstacle);
+        myObstacle.x = x;
+        myObstacle.y = y;
+        game.addGameItem(myObstacle);    
+        var obstacleImage = draw.bitmap('img/sawblade.png');
+        myObstacle.addChild(obstacleImage);
+        obstacleImage.x = -25;
+        obstacleImage.y = -25;
+        
+    }
+        function createBox(x,y) {
+        var hitZoneSize = 25;
+        var damageFromObstacle = 10;
+        var  myBox = game.createObstacle(hitZoneSize,damageFromObstacle);
+        myBox.x = x;
+        myBox.y = y;
+        game.addGameItem(myBox);
+        var shape = draw.rect(100, 100, '#2d1606');
+        myBox.addChild(shape);
+        shape.x = -25;
+        shape.y = -25;
+        }
     }
 };
 
