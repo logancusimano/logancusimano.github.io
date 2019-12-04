@@ -1,10 +1,10 @@
 var background = function (window) {
     'use strict';
-    
+
     window.opspark = window.opspark || {};
     var draw = window.opspark.draw;
     var createjs = window.createjs;
-    
+
     /*
      * Create a background view for our game application
      */
@@ -16,37 +16,37 @@ var background = function (window) {
         if(!ground || typeof(ground.y) == 'undefined') {
             throw new Error("Invalid ground argument");
         }
-        
+
         // useful variables
         var canvasWidth = app.canvas.width;
         var canvasHeight = app.canvas.height;
         var groundY = ground.y;
-        
+
         // container which will be returned
         var background;
         var tree;
         var buildings = [];
 
         // ANIMATION VARIABLES HERE:
-        
-     
+
+
         // called at the start of game and whenever the page is resized
         // add objects for display in background. draws each image added to the background once
         function render() {
             background.removeAllChildren();
 
             // TODO: 2 - Part 2
-            // this fills the background with a obnoxious 
+            // this fills the background with a obnoxious
             // you should modify this to suit your game
             var backgroundGround = draw.rect(canvasWidth,canvasHeight,'#2d1606');
             background.addChild(backgroundGround);
-            
-            var backgroundGrass = draw.rect(canvasWidth,500,'DarkGreen');
+
+            var backgroundGrass = draw.rect(canvasWidth,groundY+75,'DarkGreen');
             background.addChild(backgroundGrass);
-            
-            var backgroundSky = draw.rect(canvasWidth,445,'Black');
+
+            var backgroundSky = draw.rect(canvasWidth,groundY,'Black');
             background.addChild(backgroundSky);
-          
+
             // TODO: 3 - Add a moon and starfield
             var circle;
             for(var i=0;i<100;i++) {
@@ -57,9 +57,9 @@ var background = function (window) {
             }
             var moon = draw.bitmap('img/moon.png');
                 moon.x = 300;
-                moon.y = 25;
-                moon.scaleX = 1.0;
-                moon.scaleY = 1.0;
+                moon.y = groundY-300;
+                moon.scaleX = 0.5;
+                moon.scaleY = 0.5;
                 background.addChild(moon);
             // TODO: 5 - Add buildings!     Q: This is before TODO 4 for a reason! Why?
 
@@ -74,17 +74,17 @@ var background = function (window) {
                 }
 
 
-            
+
             // TODO 4: Part 1 - Add a tree
             tree = draw.bitmap('img/tree.png');
             tree.x = 700;
-            tree.y = 225;
+            tree.y = groundY-200;
             background.addChild(tree);
 
-            
+
         } // end of render function - DO NOT DELETE
-        
-        
+
+
         // Perform background animation
         // called on each timer "tick" - 60 times per second
         function update() {
@@ -92,7 +92,7 @@ var background = function (window) {
             var canvasWidth = app.canvas.width;
             var canvasHeight = app.canvas.height;
             var groundY = ground.y;
-            
+
             // TODO 4: Part 2 - Move the tree!
             tree.x = tree.x - 1;
             if(tree.x < -200) {
@@ -105,21 +105,21 @@ var background = function (window) {
             if(building.x < -200) {
             building.x = canvasWidth;
                 }
-            } 
+            }
 
         } // end of update function - DO NOT DELETE
-        
-        
-        
+
+
+
         /* Make a createjs Container for the background and let it know about the render and upate functions*/
         background = new createjs.Container();
         background.resize = render;
         background.update = update;
-        
+
         /* make the background able to respond to resizing and timer updates*/
         app.addResizeable(background);
         app.addUpdateable(background);
-        
+
         /* render and return the background */
         render();
         return background;
